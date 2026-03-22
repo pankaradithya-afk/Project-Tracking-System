@@ -6,6 +6,9 @@ import { useLocation } from 'react-router-dom'
 const pageMeta: Record<string, { title: string; subtitle?: string }> = {
     '/dashboard': { title: 'Dashboard', subtitle: 'Real-time project KPIs and insights' },
     '/projects': { title: 'Projects', subtitle: 'Manage irrigation project records' },
+    '/projects/new': { title: 'Create Project', subtitle: 'Add a new project to the tracker' },
+    '/projects/:id': { title: 'Project Details', subtitle: 'Track tasks, progress, and team activity' },
+    '/projects/:id/tasks/new': { title: 'Create Task', subtitle: 'Add a new task to this project' },
     '/boq': { title: 'BOQ Contract', subtitle: 'Bill of Quantities — Contract register' },
     '/sap-breakup': { title: 'SAP Breakup', subtitle: 'SAP BOQ material-level breakup' },
     '/milestones': { title: 'Schedule Milestones', subtitle: 'Project timeline and progress tracking' },
@@ -33,7 +36,17 @@ const pageMeta: Record<string, { title: string; subtitle?: string }> = {
 
 export default function DashboardLayout() {
     const location = useLocation()
-    const currentPath = Object.keys(pageMeta).find((p) => location.pathname.startsWith(p)) ?? '/dashboard'
+    const isTaskCreateRoute = location.pathname.startsWith('/projects/') && location.pathname.endsWith('/tasks/new')
+    const isProjectCreateRoute = location.pathname === '/projects/new'
+    const isProjectDetailRoute = location.pathname.startsWith('/projects/') && !isTaskCreateRoute && location.pathname !== '/projects/new'
+    const currentPath =
+        isTaskCreateRoute
+            ? '/projects/:id/tasks/new'
+            : isProjectCreateRoute
+                ? '/projects/new'
+            : isProjectDetailRoute
+                ? '/projects/:id'
+                : Object.keys(pageMeta).find((p) => location.pathname.startsWith(p)) ?? '/dashboard'
     const meta = pageMeta[currentPath] ?? { title: 'IrrigTrack', subtitle: '' }
 
     return (

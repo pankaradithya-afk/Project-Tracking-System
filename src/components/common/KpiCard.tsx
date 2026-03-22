@@ -50,7 +50,7 @@ export function KpiCard({
                     {loading ? (
                         <div className="h-7 w-28 rounded animate-pulse" style={{ background: 'rgba(51,65,85,0.5)' }} />
                     ) : (
-                        <p className="text-2xl font-bold truncate" style={{ color: 'var(--color-surface-50)' }}>
+                        <p className="text-2xl font-bold whitespace-nowrap leading-none" style={{ color: 'var(--color-surface-50)' }}>
                             {displayValue}
                         </p>
                     )}

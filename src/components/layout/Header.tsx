@@ -30,9 +30,11 @@ export default function Header({ title, subtitle }: HeaderProps) {
                     style={{ background: 'rgba(20,184,166,0.08)', borderColor: 'rgba(20,184,166,0.25)', color: 'var(--color-brand-300)' }}
                 >
                     <span className="text-xs font-semibold" style={{ color: 'var(--color-surface-400)' }}>Active Project:</span>
-                    <span className="text-sm font-bold">{activeProject.project_id}</span>
-                    <span className="text-xs hidden lg:block truncate max-w-40" style={{ color: 'var(--color-surface-300)' }}>{activeProject.project_name}</span>
-                    <span className="text-xs font-bold ml-2" style={{ color: 'var(--color-brand-400)' }}>{formatCurrency(activeProject.wo_value)}</span>
+                    <span className="text-sm font-bold">{activeProject.project_id ?? activeProject.id}</span>
+                    <span className="text-xs hidden lg:block truncate max-w-40" style={{ color: 'var(--color-surface-300)' }}>{activeProject.project_name ?? activeProject.name}</span>
+                    <span className="text-xs font-bold ml-2" style={{ color: 'var(--color-brand-400)' }}>
+                        {activeProject.wo_value != null ? formatCurrency(activeProject.wo_value) : `${activeProject.progress?.toFixed(0) ?? 0}%`}
+                    </span>
                     <ChevronDown size={14} />
                 </button>
             )}

@@ -1,8 +1,114 @@
 // ============================================================
-// CORE DOMAIN TYPES — Irrigation Project Tracking System
+// CORE DOMAIN TYPES - Irrigation Project Tracking System
 // ============================================================
 
-export type ProjectStatus = 'Active' | 'On Hold' | 'Completed'
+export type ProjectStatus = 'planning' | 'active' | 'on_hold' | 'completed' | 'archived'
+export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done'
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
+export type UserRole = 'admin' | 'member' | 'viewer'
+
+export interface User {
+    id: string
+    auth_user_id: string
+    full_name: string | null
+    email: string
+    role: UserRole
+    avatar_url: string | null
+    is_active: boolean
+    created_at: string
+    updated_at: string
+}
+
+export interface ProjectMember {
+    id: string
+    project_id: string
+    user_id: string
+    role: UserRole
+    joined_at: string
+    user?: User
+}
+
+export interface TaskDependency {
+    id: string
+    task_id: string
+    dependency_task_id: string
+    created_at: string
+    dependency_task?: Task
+}
+
+export interface ProjectStage {
+    id: string
+    name: string
+    description: string | null
+    sort_order: number
+    is_default: boolean
+    is_active: boolean
+    created_at: string
+    updated_at: string
+}
+
+export interface Notification {
+    id: string
+    user_id: string
+    project_id: string | null
+    task_id: string | null
+    type: 'task_assigned' | 'task_completed' | 'deadline_approaching' | 'project_updated' | 'system'
+    title: string
+    message: string
+    read_at: string | null
+    created_at: string
+    project?: Project
+    task?: Task
+}
+
+export interface Project {
+    id: string
+    name: string
+    description: string | null
+    status: ProjectStatus
+    start_date: string
+    end_date: string | null
+    progress: number
+    created_by: string
+    created_at: string
+    updated_at: string
+    deleted_at: string | null
+    archived_at: string | null
+    team_members?: ProjectMember[]
+    tasks?: Task[]
+    task_count?: number
+    completed_task_count?: number
+    upcoming_deadline_count?: number
+    // Legacy fields kept for existing pages while we migrate.
+    project_id?: string
+    project_name?: string
+    client?: string
+    location?: string
+    wo_number?: string
+    wo_date?: string
+    wo_value?: number
+    remarks?: string
+}
+
+export interface Task {
+    id: string
+    project_id: string
+    title: string
+    description: string | null
+    status: TaskStatus
+    priority: TaskPriority
+    assigned_to: string | null
+    due_date: string | null
+    completed_at: string | null
+    sort_order: number
+    created_by: string
+    created_at: string
+    updated_at: string
+    deleted_at: string | null
+    assignee?: User
+    dependencies?: TaskDependency[]
+    dependent_tasks?: TaskDependency[]
+}
 export type BOQCategory = 'Material' | 'Installation' | 'Earthwork' | 'Equipment'
 export type MaterialCategory = 'Raw' | 'Consumable' | 'Equipment' | 'Finished'
 export type VendorCategory = 'Material' | 'Service' | 'Subcontract' | 'Equipment'
@@ -27,22 +133,6 @@ export type ExecutionType = 'Hole' | 'Round' | 'LS' | 'Meter' | 'Each'
 export type CostType = 'Material' | 'Labor' | 'Equipment' | 'Subcontract' | 'Indirect'
 
 // ---- Tables ----
-
-export interface Project {
-    id: string
-    project_id: string
-    project_name: string
-    client: string
-    location?: string
-    wo_number: string
-    wo_date: string
-    wo_value: number
-    status: ProjectStatus
-    created_by?: string
-    created_at: string
-    updated_at: string
-    remarks?: string
-}
 
 export interface BOQContract {
     id: string
@@ -338,8 +428,6 @@ export interface DocumentRegister {
 
 export interface AlertLog {
     id: string
-    alert_id: string
-    alert_date: string
     project_id: string
     category: AlertCategory
     severity: AlertSeverity
@@ -349,6 +437,8 @@ export interface AlertLog {
     resolved_date?: string
     resolved_by?: string
     created_at: string
+    alert_id?: string
+    alert_date?: string
 }
 
 export interface Budget {

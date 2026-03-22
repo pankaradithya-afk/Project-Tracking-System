@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from 'clsx'
+﻿import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -69,6 +69,15 @@ export function getStatusColor(status: string): string {
         Active: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
         Completed: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
         'On Hold': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        planning: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+        active: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+        on_hold: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        completed: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+        archived: 'bg-slate-600/20 text-slate-300 border-slate-600/30',
+        todo: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+        in_progress: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+        review: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        done: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
         Approved: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
         Draft: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
         Submitted: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -90,8 +99,30 @@ export function getStatusColor(status: string): string {
         Delayed: 'bg-red-500/20 text-red-400 border-red-500/30',
         'In Progress': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
         'Not Started': 'bg-slate-500/20 text-slate-400 border-slate-500/30',
+        low: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+        medium: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        high: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+        urgent: 'bg-red-500/20 text-red-400 border-red-500/30',
     }
     return map[status] ?? 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+}
+
+export function getPriorityColor(priority: string): string {
+    const map: Record<string, string> = {
+        low: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+        medium: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        high: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+        urgent: 'bg-red-500/20 text-red-400 border-red-500/30',
+    }
+    return map[priority] ?? map.low
+}
+
+export function getProjectProgressClass(progress: number): string {
+    if (progress >= 100) return 'progress-fill-green'
+    if (progress >= 75) return 'progress-fill-blue'
+    if (progress >= 50) return 'progress-fill-teal'
+    if (progress >= 25) return 'progress-fill-amber'
+    return 'progress-fill-red'
 }
 
 /**
@@ -101,3 +132,4 @@ export function truncate(text: string, length = 50): string {
     if (text.length <= length) return text
     return text.slice(0, length) + '...'
 }
+

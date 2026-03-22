@@ -457,7 +457,7 @@ BEGIN
     (p_id,'Finance','Medium','PO-2026-013 (Pumps) delivery still pending. Required by commissioning date 2026-03-20.','SAP-18-A',false,NULL),
     (p_id,'Billing','High','INV-2026-005, INV-2026-006, INV-2026-007 submitted but not yet certified by client. Chase for approval.','SAP-06-A',false,NULL),
     (p_id,'Procurement','Low','PR-2026-014 (Rain Sensors) still in Draft. Raise PO before commissioning.','SAP-19-A',false,NULL),
-    (p_id,'Installation','Medium','BOQ-24: Only 5 of 8 controllers mounted. Remaining 3 pending due to civil wall delay.','SAP-24-A',false,NULL),
+    (p_id,'Execution','Medium','BOQ-24: Only 5 of 8 controllers mounted. Remaining 3 pending due to civil wall delay.','SAP-24-A',false,NULL),
     (p_id,'Schedule','Low','Drip Zone (BOQ-10) not yet started. Planned start 2026-03-01. Currently delayed.','SAP-10-A',false,NULL)
   ;
 

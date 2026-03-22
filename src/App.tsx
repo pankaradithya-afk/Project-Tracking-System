@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useUserStore } from '@/stores/userStore'
 
@@ -9,7 +9,10 @@ import DashboardLayout from '@/components/layout/DashboardLayout'
 
 // Pages
 import LoginPage from '@/pages/LoginPage'
-import DashboardPage from '@/pages/DashboardPage'
+const DashboardPage = lazy(() => import('@/pages/Dashboard'))
+const ProjectCreatePage = lazy(() => import('@/pages/ProjectCreatePage'))
+const ProjectDetailsPage = lazy(() => import('@/pages/ProjectDetailsPage'))
+const TaskCreatePage = lazy(() => import('@/pages/TaskCreatePage'))
 import ProjectsPage from '@/pages/ProjectsPage'
 import BOQPage from '@/pages/BOQPage'
 import SAPBreakupPage from '@/pages/SAPBreakupPage'
@@ -94,9 +97,48 @@ export default function App() {
               </AuthGuard>
             }
           >
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="projects" element={<ProjectsPage />} />
+            <Route
+              index
+              element={
+                <Navigate to="/dashboard" replace />
+              }
+            />
+            <Route
+              path="dashboard"
+              element={
+                <Suspense fallback={<div className="p-6 text-sm text-slate-400">Loading dashboard...</div>}>
+                  <DashboardPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="projects"
+              element={<ProjectsPage />}
+            />
+            <Route
+              path="projects/new"
+              element={
+                <Suspense fallback={<div className="p-6 text-sm text-slate-400">Loading form...</div>}>
+                  <ProjectCreatePage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="projects/:id"
+              element={
+                <Suspense fallback={<div className="p-6 text-sm text-slate-400">Loading project...</div>}>
+                  <ProjectDetailsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="projects/:id/tasks/new"
+              element={
+                <Suspense fallback={<div className="p-6 text-sm text-slate-400">Loading task form...</div>}>
+                  <TaskCreatePage />
+                </Suspense>
+              }
+            />
             <Route path="boq" element={<BOQPage />} />
             <Route path="sap-breakup" element={<SAPBreakupPage />} />
             <Route path="milestones" element={<MilestonesPage />} />

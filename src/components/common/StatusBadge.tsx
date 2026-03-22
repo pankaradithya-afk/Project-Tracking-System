@@ -6,9 +6,10 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
+    const label = status.replace(/_/g, ' ')
     return (
         <span className={cn('status-badge', getStatusColor(status), className)}>
-            {status}
+            {label}
         </span>
     )
 }

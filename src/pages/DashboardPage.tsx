@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useProjectStore } from '@/stores/projectStore'
 import { useAlertStore } from '@/stores/alertStore'
@@ -167,7 +167,7 @@ export default function DashboardPage() {
                             <BarChart data={budgetChartData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(51,65,85,0.4)" />
                                 <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(value) => `â‚¹${(value / 1000).toFixed(0)}K`} />
+                                <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`} />
                                 <Tooltip
                                     contentStyle={{ background: '#1e293b', border: '1px solid rgba(51,65,85,0.6)', borderRadius: '8px', color: '#e2e8f0' }}
                                     formatter={(value) => formatCurrency(typeof value === 'number' ? value : 0)}
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                                         <p className="text-sm" style={{ color: 'var(--color-surface-100)' }}>{alert.message}</p>
                                         <StatusBadge status={alert.severity} className="shrink-0" />
                                     </div>
-                                    <p className="text-xs mt-1" style={{ color: 'var(--color-surface-400)' }}>{alert.category} Â· {formatDate(alert.created_at)}</p>
+                                    <p className="text-xs mt-1" style={{ color: 'var(--color-surface-400)' }}>{alert.category} Ã‚Â· {formatDate(alert.created_at)}</p>
                                 </div>
                             ))}
                         </div>
@@ -254,3 +254,4 @@ export default function DashboardPage() {
         </div>
     )
 }
+
