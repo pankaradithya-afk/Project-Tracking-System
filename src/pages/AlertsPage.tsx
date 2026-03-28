@@ -104,7 +104,7 @@ export default function AlertsPage() {
                         <div className="glass-card p-8 text-center">
                             <CheckCircle size={32} className="mx-auto mb-2" style={{ color: '#34d399' }} />
                             <p style={{ color: 'var(--color-surface-300)' }}>All clear! No active alerts for this project.</p>
-                            <p className="text-xs mt-2" style={{ color: 'var(--color-surface-500)' }}>If you expected alerts here, the active project may not match the seeded data.</p>
+                            <p className="text-xs mt-2" style={{ color: 'var(--color-surface-500)' }}>Alerts will appear here once live project transactions and checks begin creating them.</p>
                         </div>
                     ) : (
                         <div className="space-y-2">{unresolved.map(a => <AlertCard key={a.id} alert={a} />)}</div>

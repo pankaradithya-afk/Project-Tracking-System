@@ -2,10 +2,24 @@
 // CORE DOMAIN TYPES - Irrigation Project Tracking System
 // ============================================================
 
-export type ProjectStatus = 'planning' | 'active' | 'on_hold' | 'completed' | 'archived'
+export type ProjectLifecycleStatus = 'enquiry' | 'upcoming' | 'current' | 'finished' | 'archived'
+export type LegacyProjectStatus = 'planning' | 'active' | 'on_hold' | 'completed' | 'archived'
+export type ProjectStatus = ProjectLifecycleStatus | LegacyProjectStatus
 export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done'
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
 export type UserRole = 'admin' | 'member' | 'viewer'
+export type CustomerCompanyType = 'private' | 'govt' | 'consultant'
+export type ERPProjectType = 'golf' | 'cricket' | 'football'
+export type InteractionMode = 'call' | 'meeting' | 'email'
+export type DesignType = 'concept' | 'detailed' | 'ifc'
+export type DesignApprovalStatus = 'draft' | 'submitted' | 'approved' | 'rejected'
+export type ERPBOQLineCategory = 'material' | 'labor' | 'lumpsum'
+export type CostComponentType = 'material' | 'import_duty' | 'freight' | 'labor' | 'overheads' | 'margin'
+export type QuotationStatus = 'draft' | 'submitted' | 'revised' | 'approved'
+export type ERPVendorType = 'manufacturer' | 'dealer' | 'retailer'
+export type ERPAssetType = 'equipment' | 'tool'
+export type AssetOwnership = 'owned' | 'hired'
+export type LaborSkillLevel = 'unskilled' | 'semi_skilled' | 'skilled' | 'specialist'
 
 export interface User {
     id: string
@@ -83,10 +97,16 @@ export interface Project {
     project_id?: string
     project_name?: string
     client?: string
+    client_contact?: string
     location?: string
     wo_number?: string
     wo_date?: string
     wo_value?: number
+    scope_of_works?: string
+    team_plan?: string
+    work_plan?: string
+    wo_received_date?: string
+    order_value?: number
     remarks?: string
 }
 
@@ -109,6 +129,219 @@ export interface Task {
     dependencies?: TaskDependency[]
     dependent_tasks?: TaskDependency[]
 }
+
+export interface Customer {
+    id: string
+    client_name: string
+    company_type: CustomerCompanyType
+    contact_person: string | null
+    phone: string | null
+    email: string | null
+    address: string | null
+    gst_no: string | null
+    payment_behavior: string | null
+    credit_period: number
+    created_at: string
+    updated_at: string
+}
+
+export interface Interaction {
+    id: string
+    project_id: string
+    interaction_date: string
+    mode: InteractionMode
+    discussion_summary: string
+    action_required: string | null
+    responsible_person_id: string | null
+    created_at: string
+    updated_at: string
+    responsible_person?: User | null
+}
+
+export interface Design {
+    id: string
+    project_id: string
+    version_no: number
+    designer_id: string | null
+    design_type: DesignType
+    approval_status: DesignApprovalStatus
+    is_final_ifc: boolean
+    is_locked: boolean
+    finalized_at: string | null
+    created_at: string
+    updated_at: string
+    designer?: User | null
+}
+
+export interface BOQHeader {
+    id: string
+    project_id: string
+    design_id: string
+    version_no: number
+    prepared_by: string | null
+    boq_date: string
+    created_at: string
+    updated_at: string
+}
+
+export interface BOQLine {
+    id: string
+    boq_header_id: string
+    line_no: number
+    material_id: string | null
+    description: string | null
+    category: ERPBOQLineCategory
+    qty: number
+    uom: string
+    rate: number
+    amount: number
+    sap_breakup_required: boolean
+    created_at: string
+    updated_at: string
+    material?: Material | null
+}
+
+export interface CostComponent {
+    id: string
+    boq_line_id: string
+    component_type: CostComponentType
+    component_amount: number
+    created_at: string
+    updated_at: string
+}
+
+export interface Quotation {
+    id: string
+    project_id: string
+    design_id: string
+    version_no: number
+    total_cost: number
+    quoted_value: number
+    margin_percent: number
+    validity_date: string | null
+    status: QuotationStatus
+    approved_at: string | null
+    created_at: string
+    updated_at: string
+    design?: Design
+}
+
+export interface QuotationRevision {
+    id: string
+    quotation_id: string
+    revision_no: number
+    previous_quoted_value: number | null
+    revised_quoted_value: number
+    commercial_impact: number
+    final_agreed_value: number | null
+    revision_reason: string | null
+    revised_by: string | null
+    revision_date: string
+    created_at: string
+    updated_at: string
+}
+
+export interface NegotiationLog {
+    id: string
+    quotation_id: string
+    discussion_date: string
+    discussion_summary: string
+    commercial_impact: number
+    proposed_value: number | null
+    agreed_value: number | null
+    next_action: string | null
+    logged_by: string | null
+    created_at: string
+    updated_at: string
+}
+
+export interface Material {
+    id: string
+    code: string
+    description: string
+    category: 'raw' | 'consumable' | 'equipment' | 'finished'
+    uom: string
+    standard_cost: number
+    created_at: string
+    updated_at: string
+}
+
+export interface Vendor {
+    id: string
+    name: string
+    type: ERPVendorType
+    contact_person: string | null
+    phone: string | null
+    email: string | null
+    address: string | null
+    payment_terms: string | null
+    gst_no: string | null
+    created_at: string
+    updated_at: string
+}
+
+export interface VendorBrandMapping {
+    id: string
+    vendor_id: string
+    brand_name: string
+    dealer_type: string | null
+    territory: string | null
+    created_at: string
+    updated_at: string
+}
+
+export interface VendorPrice {
+    id: string
+    vendor_id: string
+    material_code: string
+    base_price: number
+    discount: number
+    net_price: number
+    created_at: string
+    updated_at: string
+}
+
+export interface Asset {
+    id: string
+    asset_code: string
+    asset_name: string
+    asset_type: ERPAssetType
+    ownership: AssetOwnership
+    current_project_id: string | null
+    created_at: string
+    updated_at: string
+}
+
+export interface LaborRate {
+    id: string
+    category: string
+    skill_level: LaborSkillLevel
+    daily_rate: number
+    created_at: string
+    updated_at: string
+}
+
+export interface BOQContractExecution {
+    id: string
+    project_id: string
+    quotation_id: string
+    design_id: string
+    boq_line_id: string
+    contract_version_no: number
+    line_no: number
+    material_id: string | null
+    description: string | null
+    category: ERPBOQLineCategory
+    qty: number
+    uom: string
+    rate: number
+    amount: number
+    sap_breakup_required: boolean
+    locked_at: string
+    created_at: string
+    updated_at: string
+}
+export type BOQItemType = 'regular' | 'lumpsum'
 export type BOQCategory = 'Material' | 'Installation' | 'Earthwork' | 'Equipment'
 export type MaterialCategory = 'Raw' | 'Consumable' | 'Equipment' | 'Finished'
 export type VendorCategory = 'Material' | 'Service' | 'Subcontract' | 'Equipment'
@@ -149,6 +382,60 @@ export interface BOQContract {
     created_at: string
     updated_at: string
     remarks?: string
+}
+
+export interface BOQItem {
+    id: string
+    system_id: string
+    sap_ref_no: string
+    project_id: string
+    cost_code_id: string
+    cost_code?: string
+    item_id: string
+    item_code?: string
+    item_name?: string
+    boq_ref: string
+    boq_section: string
+    line_no: number
+    category: BOQCategory
+    item_type: BOQItemType
+    description: string
+    quantity: number
+    uom: string
+    rate: number
+    amount: number
+    breakup_count?: number
+    breakup_amount?: number
+    breakup_matches?: boolean
+    created_at: string
+    updated_at: string
+}
+
+export interface BOQLumpsumBreakupLine {
+    id: string
+    system_id: string
+    boq_item_id: string
+    project_id: string
+    cost_code_id: string
+    cost_code?: string
+    material_item_id: string
+    material_item_code?: string
+    material_item_name?: string
+    line_no: number
+    sap_ref_no: string
+    description: string
+    quantity: number
+    uom: string
+    rate: number
+    amount: number
+    boq_ref?: string
+    boq_section?: string
+    boq_description?: string
+    boq_amount?: number
+    breakup_total?: number
+    variance?: number
+    created_at: string
+    updated_at: string
 }
 
 export interface MaterialMaster {

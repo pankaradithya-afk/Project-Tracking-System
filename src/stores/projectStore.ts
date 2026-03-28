@@ -15,6 +15,10 @@ export const useProjectStore = create<ProjectState>()(
         }),
         {
             name: 'project-storage',
+            version: 2,
+            migrate: () => ({
+                activeProject: null,
+            }),
         }
     )
 )

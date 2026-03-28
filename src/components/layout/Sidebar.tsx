@@ -25,41 +25,71 @@ const navGroups: NavGroup[] = [
         label: 'Overview',
         items: [
             { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-            { to: '/projects', icon: FolderOpen, label: 'Projects' },
         ],
     },
     {
-        label: 'Setup',
+        label: 'Construction ERP',
         items: [
-            { to: '/boq', icon: ListChecks, label: 'BOQ Contract' },
-            { to: '/sap-breakup', icon: ClipboardList, label: 'SAP Breakup' },
-            { to: '/milestones', icon: Activity, label: 'Milestones' },
+            { to: '/construction/dashboard', icon: LayoutDashboard, label: 'ERP Dashboard' },
+            { to: '/construction/masters', icon: Building2, label: 'Masters' },
+            { to: '/construction/procurement', icon: ShoppingCart, label: 'Procurement' },
+            { to: '/construction/execution', icon: Construction, label: 'Execution' },
+            { to: '/construction/finance', icon: DollarSign, label: 'Finance' },
+            { to: '/construction/documents', icon: FileText, label: 'Documents' },
+        ],
+    },
+    {
+        label: 'CRM & Pre-Sales',
+        items: [
+            { to: '/crm/customers', icon: Users, label: 'Customers' },
+            { to: '/crm/enquiries', icon: FolderOpen, label: 'Enquiries' },
+            { to: '/crm/interactions', icon: FileText, label: 'Interaction Log' },
+        ],
+    },
+    {
+        label: 'Estimation & Design',
+        items: [
+            { to: '/estimation/designs', icon: ClipboardList, label: 'Design Versions' },
+            { to: '/estimation/boq-builder', icon: ListChecks, label: 'BOQ Builder' },
+            { to: '/estimation/quotations', icon: FileText, label: 'Quotations' },
+            { to: '/estimation/negotiations', icon: DollarSign, label: 'Negotiations' },
+        ],
+    },
+    {
+        label: 'Project Setup (Execution)',
+        items: [
+            { to: '/execution/active-projects', icon: FolderOpen, label: 'Active Projects' },
+            { to: '/execution/boq-contract', icon: ListChecks, label: 'BOQ Contract' },
+            { to: '/execution/sap-breakup', icon: ClipboardList, label: 'SAP Breakup' },
+            { to: '/execution/milestones', icon: Activity, label: 'Milestones' },
+            { to: '/execution/contracts', icon: Building2, label: 'Vendor Contracts' },
+            { to: '/execution/logs', icon: ClipboardList, label: 'Daily Logs' },
         ],
     },
     {
         label: 'Procurement',
         items: [
-            { to: '/warehouse-planning', icon: Warehouse, label: 'WH Planning' },
-            { to: '/purchase-requests', icon: ShoppingCart, label: 'Purchase Requests' },
-            { to: '/purchase-orders', icon: Package, label: 'Purchase Orders' },
-            { to: '/grn', icon: Truck, label: 'GRN Register' },
+            { to: '/procurement/warehouse-planning', icon: Warehouse, label: 'WH Planning' },
+            { to: '/procurement/purchase-requests', icon: ShoppingCart, label: 'Purchase Requests' },
+            { to: '/procurement/purchase-orders', icon: Package, label: 'Purchase Orders' },
+            { to: '/procurement/grn', icon: Truck, label: 'GRN' },
         ],
     },
     {
-        label: 'Execution',
+        label: 'Site Operations',
         items: [
-            { to: '/stock', icon: Warehouse, label: 'Stock View' },
-            { to: '/delivery-challans', icon: Truck, label: 'Delivery Challans' },
-            { to: '/installation', icon: Construction, label: 'Installation' },
-            { to: '/labor-cost', icon: Users, label: 'Labor / Equip Cost' },
+            { to: '/operations/stock', icon: Warehouse, label: 'Stock View' },
+            { to: '/operations/transfers', icon: Truck, label: 'DC / Inter-Site Transfers' },
+            { to: '/operations/installation', icon: Construction, label: 'Installation' },
+            { to: '/operations/labor-asset-cost', icon: Users, label: 'Labor / Asset Cost' },
         ],
     },
     {
         label: 'Billing',
         items: [
-            { to: '/invoices', icon: FileText, label: 'Invoices' },
-            { to: '/payments', icon: DollarSign, label: 'Payments' },
-            { to: '/change-orders', icon: ClipboardList, label: 'Change Orders' },
+            { to: '/billing/ra-bills', icon: FileText, label: 'RA Bills / Invoices' },
+            { to: '/billing/payments', icon: DollarSign, label: 'Payments' },
+            { to: '/billing/change-orders', icon: ClipboardList, label: 'Change Orders' },
         ],
     },
     {
@@ -67,22 +97,18 @@ const navGroups: NavGroup[] = [
         items: [
             { to: '/reports/boq-tracker', icon: BarChart3, label: 'BOQ Tracker' },
             { to: '/reports/budget-actual', icon: BarChart3, label: 'Budget vs Actual' },
-            { to: '/reports/variance', icon: BarChart3, label: 'Variance Report' },
-            { to: '/reports/schedule', icon: BarChart3, label: 'Schedule Report' },
+            { to: '/reports/profitability', icon: BarChart3, label: 'Profitability' },
         ],
     },
     {
-        label: 'Records',
+        label: 'Master Data',
         items: [
-            { to: '/documents', icon: FileText, label: 'Documents' },
-        ],
-    },
-    {
-        label: 'Admin',
-        items: [
-            { to: '/admin/materials', icon: Package, label: 'Material Master' },
-            { to: '/admin/vendors', icon: Building2, label: 'Vendor Master' },
-            { to: '/admin/users', icon: Users, label: 'User Management' },
+            { to: '/master/materials', icon: Package, label: 'Materials' },
+            { to: '/master/vendors', icon: Building2, label: 'Vendors' },
+            { to: '/master/vendor-pricing', icon: DollarSign, label: 'Vendor Pricing' },
+            { to: '/master/assets', icon: Construction, label: 'Assets' },
+            { to: '/master/labor-rates', icon: Users, label: 'Labor Rates' },
+            { to: '/master/users', icon: Users, label: 'Users' },
         ],
     },
 ]
@@ -111,7 +137,7 @@ export default function Sidebar() {
                 </div>
                 <div>
                     <p className="font-bold text-sm" style={{ color: 'var(--color-surface-50)' }}>IrrigTrack</p>
-                    <p className="text-xs" style={{ color: 'var(--color-surface-400)' }}>Project Management</p>
+                    <p className="text-xs" style={{ color: 'var(--color-surface-400)' }}>CRM and Execution ERP</p>
                 </div>
             </div>
 
